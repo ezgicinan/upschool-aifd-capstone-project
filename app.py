@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 import os
 import google.generativeai as genai
-import streamlit
+import streamlit as st
 
 # Load environment variables from .env file
 load_dotenv()
@@ -31,3 +31,5 @@ chat_session = model.start_chat(
 # JSON parse
 #analysis = response.text
 #print("ANALYSIS: ", analysis)
+
+st.title("InterviewMe")
