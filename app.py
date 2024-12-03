@@ -68,16 +68,47 @@ if start_interview and not isEmpty:
     st.write("Generating your interview questions...")
 
     questions = ["What is polymorphism in Java?", 
-                 "How does Spring Boot handle dependency injection?", 
-                 "What is a primary key in MySQL?"]
+                "How does Spring Boot handle dependency injection?", 
+                "What is a primary key in MySQL?"]
     
+    ai_answers = ["Polymorphism in Java is a concept by which we can perform a single action in different ways. It is one of the four pillars of Object-Oriented Programming (OOP).", 
+                "Spring Boot handles dependency injection by using the @Autowired annotation to inject dependencies into a Spring Bean.", 
+                "A primary key in MySQL is a unique identifier for each row in a table. It ensures that each row is uniquely identified and can be used to enforce data integrity."]
+
     for i, question in enumerate(questions, start=1):
         st.subheader(f"Question {i}: {question}")
         user_answer = st.text_area(f"Your Answer for Question {i}", key=f"answer_{i}")
-        show_ai_response = st.button(f"Show AI Response for Question {i}", key=f"ai_response_{i}")
+        send_answer = st.button(f"Send Answer for Question {i}", key=f"send_{i}")
         show_your_score = st.button(f"Show Your Score for Question {i}", key=f"score_{i}")
+        user_scores = [3, 1, 5]
+
+        print("KOD BURDAMA 85 . SATIR")
+
+
+        # Placeholder for user responses
+        if f"user_response_{i}" not in st.session_state:
+            print("KOD BURDAMA 85 . SATIR 1")
+
+            st.session_state[f"user_response_{i}"] = None
+
+        if send_answer:
+            print("KOD BURDAMA 85 . SATIR 2")
+            st.session_state[f"user_response_{i}"] = user_answer
+        
+        if st.session_state[f"user_response_{i}"]:
+            st.write(f"Your Answer: {st.session_state[f'user_response_{i}']}")
+
+            col1, col2 = st.columns(2)
+            with col1:
+                if st.button(f"Show AI Response for Question {i}", key=f"ai_response_{i}"):
+                    st.write(f"AI Response: {ai_answers[i - 1]}")
+            with col2:
+                if st.button(f"Show Your Score for Question {i}", key=f"score_{i}"):
+                    st.write(f"Your Score: {user_scores[i - 1]}")
 
         if user_answer:
+            st.write(f"User Answer for Question {i}: {user_answer}")
+            show_ai_response = st.button(f"Show AI Response for Question {i}", key=f"ai_response_{i}")
             st.write(f"Your Answer: {user_answer}")
 
             #Enables buttons
@@ -88,7 +119,8 @@ if start_interview and not isEmpty:
             if show_your_score:
                 # Placeholder for scoring logic
                 st.write("Your Score: [Score Placeholder]")
-
+elif start_interview and isEmpty:
+    st.warning('Please fill in all the fields to start the interview.', icon="⚠️")
 
 prompt = "Create interview questions at most 3."
 model = genai.GenerativeModel(model_name="gemini-1.5-flash-lates")
