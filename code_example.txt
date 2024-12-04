@@ -1,0 +1,28 @@
+import streamlit as st
+
+# Sidebar: User Inputs
+st.sidebar.title("Interview Parameters")
+username = st.sidebar.text_input("Enter your username")
+experience_level = st.sidebar.selectbox("Experience Level", ["Junior", "Mid", "Senior"])
+topics = st.sidebar.text_area("Enter topics (e.g., Java, SpringBoot, MySQL)", placeholder="Java, SpringBoot, MySQL")
+start_interview = st.sidebar.button("Start Interview")
+
+# Main Page
+st.title("Interview Me")
+
+if start_interview:
+    st.write(f"Hello, {username}! Let's start your interview for a {experience_level} level.")
+    st.write("Topics selected:", topics)
+    st.write("Generating your interview questions...")
+
+# For now, simulate placeholder questions
+    questions = ["What is polymorphism in Java?", 
+                 "How does Spring Boot handle dependency injection?", 
+                 "What is a primary key in MySQL?"]
+    for i, question in enumerate(questions, start=1):
+        st.subheader(f"Question {i}: {question}")
+        user_answer = st.text_area(f"Your Answer for Question {i}")
+        if user_answer:
+            st.write(f"Your Answer: {user_answer}")
+            st.button(f"Show AI Response for Question {i}")
+            st.button(f"Show Your Score for Question {i}")

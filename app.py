@@ -8,7 +8,6 @@ load_dotenv()
 
 # Access and Configure the API Key
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-GENERATION_CONFIG = os.getenv("GENERATION_CONFIG")
 
 st.set_page_config(page_title="Interview--- Me",
                    page_icon=":robot:",
@@ -20,6 +19,14 @@ st.title("Interview Me :)")
 @st.cache_resource
 def get_gemini_response(prompt):
     # Model Configuration
+    generation_config={
+        "temperature": 1, 
+        "top_p": 0.95, 
+        "top_k": 40, 
+        "max_output_tokens": 18192, 
+        "response_mime_type": "text/plain"
+        }
+
     safety_settings = [
         {
             "category": "HARM_CATEGORY_HARASSMENT",
@@ -42,7 +49,7 @@ def get_gemini_response(prompt):
     model = genai.GenerativeModel(
         model_name="gemini-1.5-flash-latest",
         safety_settings=safety_settings,
-        generation_config=GENERATION_CONFIG,
+        generation_config=generation_config,
     )
 
     #response = model.generate_content(prompt)
@@ -51,7 +58,16 @@ def get_gemini_response(prompt):
     response_content = "Q1:XXX; A1:YYY; Q2:XXX; A2:YYY; Q3:XXX; A3:YYY"
     st.markdown(response_content) #response.text
 
-    return response_content
+    questions = ["What is polymorphism in Java?", 
+                "How does Spring Boot handle dependency injection?", 
+                "What is a primary key in MySQL?"]
+    
+    ai_answers = ["Polymorphism in Java is a concept by which we can perform a single action in different ways. It is one of the four pillars of Object-Oriented Programming (OOP).", 
+                "Spring Boot handles dependency injection by using the @Autowired annotation to inject dependencies into a Spring Bean.", 
+                "A primary key in MySQL is a unique identifier for each row in a table. It ensures that each row is uniquely identified and can be used to enforce data integrity."]
+
+
+    return questions, ai_answers
 
 # Sidebar
 username = st.sidebar.text_input("Enter your username")
@@ -67,13 +83,7 @@ if start_interview and not isEmpty:
     st.write(f"Hello, {username}! Let's start your interview for a {experience_level} level {job_title } position. Topics selected: {topics}")
     st.write("Generating your interview questions...")
 
-    questions = ["What is polymorphism in Java?", 
-                "How does Spring Boot handle dependency injection?", 
-                "What is a primary key in MySQL?"]
-    
-    ai_answers = ["Polymorphism in Java is a concept by which we can perform a single action in different ways. It is one of the four pillars of Object-Oriented Programming (OOP).", 
-                "Spring Boot handles dependency injection by using the @Autowired annotation to inject dependencies into a Spring Bean.", 
-                "A primary key in MySQL is a unique identifier for each row in a table. It ensures that each row is uniquely identified and can be used to enforce data integrity."]
+    questions, ai_answers = get_gemini_response(topics)
 
     for i, question in enumerate(questions, start=1):
         st.subheader(f"Question {i}: {question}")
@@ -82,39 +92,12 @@ if start_interview and not isEmpty:
         show_your_score = st.button(f"Show Your Score for Question {i}", key=f"score_{i}")
         user_scores = [3, 1, 5]
 
-        print("KOD BURDAMA 85 . SATIR")
-
-
-        # Placeholder for user responses
-        if f"user_response_{i}" not in st.session_state:
-            print("KOD BURDAMA 85 . SATIR 1")
-
-            st.session_state[f"user_response_{i}"] = None
-
-        if send_answer:
-            print("KOD BURDAMA 85 . SATIR 2")
-            st.session_state[f"user_response_{i}"] = user_answer
-        
-        if st.session_state[f"user_response_{i}"]:
-            st.write(f"Your Answer: {st.session_state[f'user_response_{i}']}")
-
-            col1, col2 = st.columns(2)
-            with col1:
-                if st.button(f"Show AI Response for Question {i}", key=f"ai_response_{i}"):
-                    st.write(f"AI Response: {ai_answers[i - 1]}")
-            with col2:
-                if st.button(f"Show Your Score for Question {i}", key=f"score_{i}"):
-                    st.write(f"Your Score: {user_scores[i - 1]}")
-
+        print("KOD BURDAMA 88. SATIR")
+        #USER SATIRININ BOYUNU ÖLÇEBİLİRİZ
         if user_answer:
+            print("KOD BURDAMA 91. SATIR")
             st.write(f"User Answer for Question {i}: {user_answer}")
-            show_ai_response = st.button(f"Show AI Response for Question {i}", key=f"ai_response_{i}")
             st.write(f"Your Answer: {user_answer}")
-
-            #Enables buttons
-            if show_ai_response: 
-                ai_response = get_gemini_response(question)
-                st.write(f"AI Response: {ai_response}")
 
             if show_your_score:
                 # Placeholder for scoring logic
