@@ -136,22 +136,17 @@ if st.session_state['questions'] and not st.session_state['submitted']:
 
     if submitted:
         st.session_state['submitted'] = True
-        st.write("Form submitted successfully! 🚀")
-        st.write("Here are your answers:")
+        st.write("Form submitted successfully! 🚀  Here are your answers:")
         ai_answers = st.session_state['ai_answers']
         user_score = get_user_score(user_answers, len(ai_answers))
 
         for i, (question, answer) in enumerate(user_answers.items(), start=1):
-            #st.subheader(f"Question {i}: {question}")
-            st.write(f"Your Answer: {answer}")
-            st.write(f"AI Answer: {ai_answers[i-1]}")
-            st.write(f"Score: {user_score[i-1]}")
-        
+            st.markdown(f"**Answer to #Q{i}:** {answer}")
+            st.markdown(f"**AI's Answer:** {ai_answers[i-1]}")
+            st.markdown(f"**Score:** 🌟 {user_score[i-1]}/5")
+            st.divider()  # Adds a thin line to separate sections
+
         st.session_state['questions'] = []
         st.session_state['user_answers'] = {}
         st.session_state['ai_answers'] = []
         st.session_state['submitted'] = False
-    
-prompt = "Create interview questions at most 3."
-model = genai.GenerativeModel(model_name="gemini-1.5-flash-lates")
-#user_prompt=st.text_input("Please enter the job title you are applying for", key='message')
