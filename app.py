@@ -21,25 +21,19 @@ def parse_score_response(response_text):
     start_index = response_text.find('[')
     end_index = response_text.rfind(']') + 1
     trimmed_text = response_text[start_index:end_index]
-    print("-------------------")
-    print("TRIMMED SCORE RESPONSE:")
-    print(trimmed_text)
 
     char_list = list(trimmed_text)
     char_list.pop(0)
     char_list.pop(len(char_list)-1)
+
     modified_response = "".join(char_list)
     splittedScoreList = modified_response.split(",")
-    print("splittedScoreList:")
-    print(splittedScoreList)
+
     scoreList = []
     for element in splittedScoreList:
         convertedScore = int(element)
         scoreList.append(convertedScore)
-    
-    print("convertedScore:")
-    print(convertedScore)
-    print("----------------------------------")
+
     return scoreList
 
 
@@ -55,12 +49,6 @@ def parse_interview_response(response_text):
         # Separate questions and answers
         questions = {key: value for key, value in parsedData.items() if key.startswith("Q")}
         answers = {key: value for key, value in parsedData.items() if key.startswith("A")}
-
-        # Print the results
-        print("-------------------")
-        print("Questions Dictionary:", questions)
-        print("Answers Dictionary:", answers)
-        print("-------------------")
 
         return questions, answers
     
@@ -112,17 +100,12 @@ def generate_score_response(user_answers):
     )
     print("-------------------")
     print("Generating score response...")
+    
     prompt = generate_rating_prompt(user_answers=user_answers)
     response = model.generate_content(prompt)
     response_content = response.text
-    print("GEMINI_RATING_RESPONSE")
-    print(response_content)
-    print("-------------------")
 
-    # TODO: PARSE RESPONSE
     score_response = parse_score_response(response_content)
-    print("SCORE RESPONSE after parse:", score_response)
-    print("-------------------")
     return score_response
 
 @st.cache_resource
@@ -165,17 +148,9 @@ def get_gemini_response(level, position_name, topics):
     prompt = generate_prompt(level=level, position_name=position_name, topics=topics)
     response = model.generate_content(prompt)
     response_content = response.text
-    print("----------------------------------------")
-    print("GEMINI_INTERVIEW_RESPONSE_CONTENT")
-    print(response_content)
-    print("----------------------------------------")
 
     # Parse the response
     questions, ai_answers = parse_interview_response(response_content) or ({}, {})
-
-    print("Questions in get_gemini_response:", questions)
-    print("AI Answers in get_gemini_response:", ai_answers)
-    print("-----------------------------------------")
 
     return questions, ai_answers
 
@@ -290,8 +265,7 @@ if st.session_state['questions'] and not st.session_state['submitted']:
         ai_answers = st.session_state['ai_answers']
 
         user_score = generate_score_response(user_answers)
-        print("----------------LENGTH-------------------------")
-        print("score:", len(user_score), " ai_answers:", len(ai_answers), " user_answers:", len(user_answers))    
+
         for i, (question, answer) in enumerate(user_answers.items(), start=1):
             ai_key = f"A{i}"
             ai_answer = ai_answers.get(ai_key, "No AI answer available")
