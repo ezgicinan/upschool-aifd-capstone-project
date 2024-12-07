@@ -1,8 +1,4 @@
-
-#Gelen cepların başına seçili olabileceği bir buton koyup ifseçili_butonlar diyip soruların
-#cevaplarını görme işini yapabilirsin.
-
-
+PROMPT TRIALS
 #You’re an engineer from a software team. Generate common technical
 #interview questions for a senior software developer position and
 #suggest strong brief answers. Questions must be about Java, Java Core, Spring boot, backend and create 3 questions for each topic. Give answers as Json key-value like 
