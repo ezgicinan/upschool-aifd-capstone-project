@@ -100,7 +100,7 @@ def generate_score_response(user_answers):
     )
     print("-------------------")
     print("Generating score response...")
-    
+
     prompt = generate_rating_prompt(user_answers=user_answers)
     response = model.generate_content(prompt)
     response_content = response.text
@@ -232,6 +232,7 @@ if start_interview and not isEmpty:
         st.session_state['submitted'] = False
 elif start_interview and isEmpty:
     st.warning('Please fill in all the fields to start the interview.', icon="⚠️")
+
 print("-----------------------------------------")
 print("START INTERVIEW PRESSED AND QUESTIONS GENERATED.")
 print("-----------------------------------------")
@@ -279,3 +280,9 @@ if st.session_state['questions'] and not st.session_state['submitted']:
         st.session_state['user_answers'] = {}
         st.session_state['ai_answers'] = {}
         st.session_state['submitted'] = False
+        
+print("-----------------------------------------")
+print(" st.session_state['questions']=",  st.session_state['questions'])
+print(" st.session_state['submitted']=",  st.session_state['submitted'])
+print("st.session_state['user_answers']=", st.session_state['user_answers'])
+print("st.session_state['ai_answers']=", st.session_state['ai_answers'])
