@@ -55,8 +55,6 @@ def get_gemini_response(prompt):
     #response = model.generate_content(prompt)
     #response_content = response.text
     #print(response_content)
-    response_content = "Q1:XXX; A1:YYY; Q2:XXX; A2:YYY; Q3:XXX; A3:YYY"
-    st.markdown(response_content) #response.text
 
     questions = ["What is polymorphism in Java?", 
                 "How does Spring Boot handle dependency injection?", 
@@ -69,6 +67,14 @@ def get_gemini_response(prompt):
 
     return questions, ai_answers
 
+
+def get_user_score(user_answers, size):
+    placeholder_value = 0
+    score = [placeholder_value] * size
+    score[1] = 5
+    score[0] = 2
+    return score
+
 # Sidebar
 username = st.sidebar.text_input("Enter your username")
 job_title = st.sidebar.text_input("Enter job title", placeholder="Software Engineer")
@@ -76,46 +82,77 @@ experience_level = st.sidebar.selectbox("Experience Level", ["Junior", "Mid", "S
 topics = st.sidebar.text_area("Enter topics (e.g., Java, SpringBoot, MySQL)", placeholder="Java, SpringBoot, Backend")
 start_interview = st.sidebar.button("Start Interview")
 
+# Ensure session state for form handling
+#if 'submitted' not in st.session_state:
+#    st.session_state['submitted'] = False
+#if 'user_answers' not in st.session_state:
+#    st.session_state['user_answers'] = {}
+
+# Ensure session state for questions and user answers
+if 'questions' not in st.session_state:
+    st.session_state['questions'] = []
+if 'user_answers' not in st.session_state:
+    st.session_state['user_answers'] = {}
+if 'ai_answers' not in st.session_state:
+    st.session_state['ai_answers'] = []
 # Main Page
 # When user clicks on the "Start Interview" button
 isEmpty = not username or not job_title or not experience_level or not topics
 if start_interview and not isEmpty:
     st.write(f"Hello, {username}! Let's start your interview for a {experience_level} level {job_title } position. Topics selected: {topics}")
     st.write("Generating your interview questions...")
-
+   
+    # Generate questions and store them in session state
     questions, ai_answers = get_gemini_response(topics)
+    st.session_state['questions'] = questions
+    st.session_state['user_answers'] = {}
+    st.session_state['ai_answers'] = ai_answers
 
-    for i, question in enumerate(questions, start=1):
-        st.subheader(f"Question {i}: {question}")
-        user_answer = st.text_area(f"Your Answer for Question {i}", key=f"answer_{i}")
-        send_answer = st.button(f"Send Answer for Question {i}", key=f"send_{i}")
-        show_your_score = st.button(f"Show Your Score for Question {i}", key=f"score_{i}")
-        user_scores = [3, 1, 5]
-
-        print("KOD BURDAMA 88. SATIR")
-        #USER SATIRININ BOYUNU ÖLÇEBİLİRİZ
-        if user_answer:
-            print("KOD BURDAMA 91. SATIR")
-            st.write(f"User Answer for Question {i}: {user_answer}")
-            st.write(f"Your Answer: {user_answer}")
-
-            if show_your_score:
-                # Placeholder for scoring logic
-                st.write("Your Score: [Score Placeholder]")
 elif start_interview and isEmpty:
     st.warning('Please fill in all the fields to start the interview.', icon="⚠️")
+
+print("if else dışında.")
+print("Questions in state: ", st.session_state['questions'])
+# Post-submission actions
+#if st.session_state['submitted']:
+#    st.write("Form submitted successfully! 🚀")
+#    st.write("Here are your answers:")
+#    for i, (question, answer) in enumerate(st.session_state['user_answers'].items(), start=1):
+#        st.subheader(f"Question {i}: {question}")
+#        st.write(f"Your Answer: {answer}")
+
+# Display questions and form if questions exist
+if st.session_state['questions']:
+    form = st.form(key='questions_form')
+    form.write("Please provide your answers to the questions below.")
+    user_answers = st.session_state['user_answers']
+    ai_answers = st.session_state['ai_answers']
+    for i, question in enumerate(st.session_state['questions']):
+        form.write(f"Question {i + 1}: {question}")
+        user_answers[question] = form.text_input(label="Answer", 
+                                                 label_visibility="collapsed", 
+                                                 placeholder=f"Your Answer to Question {i+1}", 
+                                                 key=f"answer_{i}")
+    
+     # Handle form submission
+    submitted = form.form_submit_button('Submit')
+    print("user_answers in state:", st.session_state['user_answers'])
+    print("user_answers in form:", user_answers)
+
+    if submitted:
+        st.write("Form submitted successfully! 🚀")
+        st.write("Here are your answers:")
+        ai_answers = st.session_state['ai_answers']
+        user_score = get_user_score(user_answers, len(ai_answers))
+
+        for i, (question, answer) in enumerate(user_answers.items(), start=1):
+            #st.subheader(f"Question {i}: {question}")
+            st.write(f"Your Answer: {answer}")
+            st.write(f"AI Answer: {ai_answers[i-1]}")
+            st.write(f"Score: {user_score[i-1]}")
+        
+        submitted = False
 
 prompt = "Create interview questions at most 3."
 model = genai.GenerativeModel(model_name="gemini-1.5-flash-lates")
 #user_prompt=st.text_input("Please enter the job title you are applying for", key='message')
-
-def generate_response(prompt):
-    #response = genai.language.create(prompt, model="text-interview-questions")
-    #response = model.generate_content(prompt, max_tokens=200)
-    response = "Dummy response"
-    return response
-
-#if st.button("Get Questions"):
-#    response = generate_response(user_prompt)
-#    #if(response): st.write(response) kontrolü eklenebilir
-#    st.write(response)
