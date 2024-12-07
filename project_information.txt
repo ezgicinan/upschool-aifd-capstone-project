@@ -9,15 +9,30 @@
 #"Java Core": [{"Q1": "1. What is the difference between == and .equals() in Java?", "A1":"Answer..."}, {"Q2":"...","A2":"...."}],
 #"Spring Boot Question":[{"Q1":"...", "A1":"..."}]
 
-#''' 
-#chat_session = model.start_chat(
-#        history=[{
-#            "role": "user",
-#            "parts": [files_toBeUpload[0], files_toBeUpload[1]]}])
-#'''
+GEMINI_INTERVIEW_RESPONSE
+```
+["Q1: What is the difference between `==` and `.equals()` in Java?",
+ "A1: `==` compares memory addresses (references) of objects.  `.equals()` compares the content of objects. For primitive data types, `==` compares values directly.  Overriding `.equals()` is crucial to define meaningful object equality based on content.",
+ "Q2: In Spring Boot, what is the purpose of `@Autowired` annotation and how does it work?",
+ "A2: `@Autowired` is used for dependency injection. Spring's IoC container uses it to automatically wire dependencies into a class.  It searches for a bean of the required type 
+and injects it into the field or constructor.  If multiple beans match, it may throw an exception unless a qualifier is used to specify which bean is needed.",
+ "Q3: Explain the different types of joins in MySQL (INNER JOIN, LEFT JOIN, RIGHT JOIN).",
+ "A3: * INNER JOIN: Returns rows only when there is a match in both tables. \n* LEFT JOIN: Returns all rows from the left table (specified before `LEFT JOIN`), even if there is no match in the right table.  NULLs will fill unmatched columns from the right table. \n* RIGHT JOIN: Returns all rows from the right table (specified after `RIGHT JOIN`), even if there is no match in the left table. NULLs will fill unmatched columns from the left table.",
+ "Q4:  What are some common exceptions you might encounter when working with Java's JDBC API and how would you handle them?",
+ "A4: Common exceptions include `SQLException` (general database errors), `ClassNotFoundException` (driver not found), and `SQLSyntaxErrorException` (incorrect SQL).  Handling usually involves using `try-catch` blocks to catch specific exceptions, log appropriate error messages, and potentially implement retry mechanisms or rollback transactions to maintain data integrity.  Finally, providing user-friendly error messages instead of technical exceptions is generally good practice."
+]
+```
 
-# response = chat_session.send_message(prompt)
-# print("RESPONSE: ", response)
-# JSON parse
-#analysis = response.text
-#print("ANALYSIS: ", analysis)
+Questions in state:  []
+```
+["Q1: What is the difference between `==` and `.equals()` in Java?",
+ "A1: `==` compares memory addresses (references) of objects.  `.equals()` compares the content of objects. For primitive data types, `==` compares values directly.  Overriding `.equals()` is crucial to define meaningful object equality based on content.",
+ "Q2: In Spring Boot, what is the purpose of `@Autowired` annotation and how does it work?",
+ "A2: `@Autowired` is used for dependency injection. Spring's IoC container uses it to automatically wire dependencies into a class.  It searches for a bean of the required type 
+and injects it into the field or constructor.  If multiple beans match, it may throw an exception unless a qualifier is used to specify which bean is needed.",
+ "Q3: Explain the different types of joins in MySQL (INNER JOIN, LEFT JOIN, RIGHT JOIN).",
+ "A3: * INNER JOIN: Returns rows only when there is a match in both tables. \n* LEFT JOIN: Returns all rows from the left table (specified before `LEFT JOIN`), even if there is no match in the right table.  NULLs will fill unmatched columns from the right table. \n* RIGHT JOIN: Returns all rows from the right table (specified after `RIGHT JOIN`), even if there is no match in the left table. NULLs will fill unmatched columns from the left table.",
+ "Q4:  What are some common exceptions you might encounter when working with Java's JDBC API and how would you handle them?",
+ "A4: Common exceptions include `SQLException` (general database errors), `ClassNotFoundException` (driver not found), and `SQLSyntaxErrorException` (incorrect SQL).  Handling usually involves using `try-catch` blocks to catch specific exceptions, log appropriate error messages, and potentially implement retry mechanisms or rollback transactions to maintain data integrity.  Finally, providing user-friendly error messages instead of technical exceptions is generally good practice."
+]
+```
