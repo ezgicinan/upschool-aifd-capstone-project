@@ -5,6 +5,8 @@ This project is an AI-powered interview assistant that generates and evaluates t
 This project idea has been on my mind for a while. The education program I attended, UP School AI First Developer program, encuraged me during this time to bring the idea into the world.
 I successfully deployed its live version for the first time as a capstone project for AIFD program. 💃🆙
 
+See project presentation [[Link]](https://docs.google.com/presentation/d/1_EYQUjhAnyn5pkf9DV9o1Hr80Y2xIfR6/edit?usp=drive_link&ouid=116767463502226715354&rtpof=true&sd=true)
+
 ## Features
 
 - **Interactive UI**: Built with Streamlit for a user-friendly interface.
